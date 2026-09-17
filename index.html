@@ -4,211 +4,242 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Fuldur Search</title>
+<title>Barbaadi</title>
 
 <style>
 *{
   box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
 body{
-  margin:0;
   font-family:Arial,sans-serif;
-  background:#f5f7fb;
-  color:#222;
+  background:#f4f7fb;
+  color:#172033;
+  transition:.3s;
+}
+
+body.dark{
+  background:#111827;
+  color:#f3f4f6;
 }
 
 header{
-  background:linear-gradient(135deg,#0757d9,#7024d6);
+  background:linear-gradient(135deg,#075e54,#0f9d58);
   color:white;
+  padding:22px 15px;
   text-align:center;
-  padding:30px 15px;
+  box-shadow:0 3px 12px #0002;
 }
 
-header h1{
-  margin:0 0 8px;
-  font-size:32px;
+.logo{
+  font-size:30px;
+  font-weight:bold;
 }
 
-header p{
-  margin:0;
+.subtitle{
+  margin-top:6px;
+  opacity:.9;
 }
 
 .container{
-  max-width:1000px;
+  max-width:1100px;
   margin:auto;
-  padding:20px;
+  padding:15px;
 }
 
-.search{
+.searchBox{
+  background:white;
+  padding:15px;
+  border-radius:18px;
+  margin-top:15px;
+  box-shadow:0 3px 15px #0001;
+}
+
+body.dark .searchBox,
+body.dark .card,
+body.dark .historyBox{
+  background:#1f2937;
+}
+
+.searchRow{
   display:flex;
   gap:8px;
-  margin:20px 0;
 }
 
-.search input{
+#query{
   flex:1;
-  padding:16px;
+  padding:15px;
   border:1px solid #ddd;
   border-radius:12px;
-  font-size:17px;
+  font-size:16px;
   outline:none;
 }
 
-.search button{
-  border:0;
+#searchBtn{
+  border:none;
   border-radius:12px;
-  padding:0 18px;
-  background:#0757d9;
+  padding:0 20px;
+  background:#075e54;
   color:white;
-  font-size:18px;
+  font-size:16px;
   cursor:pointer;
 }
 
-.search button:disabled{
-  opacity:.6;
+.tabs{
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  padding:12px 0;
 }
 
-.status{
+.tabs button{
+  white-space:nowrap;
+  border:none;
+  padding:10px 15px;
+  border-radius:20px;
+  background:#e8eef5;
+  cursor:pointer;
+}
+
+body.dark .tabs button{
+  background:#374151;
+  color:white;
+}
+
+.tabs button.active{
+  background:#075e54;
+  color:white;
+}
+
+.tools{
+  display:flex;
+  gap:8px;
+  margin-bottom:15px;
+}
+
+.tools button{
+  border:none;
+  padding:10px 13px;
+  border-radius:10px;
+  cursor:pointer;
+  background:#fff;
+}
+
+body.dark .tools button{
+  background:#374151;
+  color:white;
+}
+
+#status{
   text-align:center;
-  padding:15px;
-  color:#555;
-}
-
-h2{
-  margin-top:30px;
+  margin:15px 0;
+  font-weight:bold;
 }
 
 .results{
   display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
   gap:15px;
 }
 
-.text-card{
+.card{
   background:white;
-  padding:18px;
-  border-radius:14px;
-  box-shadow:0 3px 12px #0001;
-}
-
-.text-card h3{
-  margin-top:0;
-  color:#0757d9;
-}
-
-.text-card p{
-  line-height:1.6;
-}
-
-.text-card a{
-  color:#0757d9;
-  text-decoration:none;
-}
-
-.images{
-  display:grid;
-  grid-template-columns:
-  repeat(auto-fit,minmax(180px,1fr));
-  gap:15px;
-}
-
-.image-card{
-  background:white;
-  border-radius:14px;
+  border-radius:16px;
+  padding:15px;
+  box-shadow:0 3px 14px #0001;
   overflow:hidden;
-  box-shadow:0 3px 12px #0001;
 }
 
-.image-card img{
+.card img{
   width:100%;
-  height:180px;
+  max-height:230px;
   object-fit:cover;
-  display:block;
+  border-radius:12px;
+  margin-bottom:10px;
 }
 
-.image-card p{
-  padding:10px;
-  margin:0;
-  font-size:14px;
+.card h3{
+  margin-bottom:8px;
+  line-height:1.4;
 }
 
-.videos{
-  display:grid;
-  gap:20px;
+.card p{
+  line-height:1.6;
+  color:#667085;
 }
 
-.video-card{
-  background:white;
-  border-radius:15px;
-  overflow:hidden;
-  box-shadow:0 3px 12px #0001;
+body.dark .card p{
+  color:#cbd5e1;
 }
 
-.video-card video{
-  width:100%;
-  max-height:450px;
-  background:#000;
-  display:block;
-}
-
-.video-info{
-  padding:15px;
-}
-
-.video-info h3{
-  margin:0 0 8px;
-  font-size:18px;
-}
-
-.video-info p{
-  color:#666;
-  font-size:14px;
-}
-
-.video-info a{
+.card a{
   display:inline-block;
-  margin-top:8px;
-  color:#0757d9;
+  margin-top:12px;
+  background:#075e54;
+  color:white;
   text-decoration:none;
+  padding:9px 13px;
+  border-radius:9px;
 }
 
-.empty{
-  text-align:center;
-  padding:25px;
-  color:#777;
+.card .small{
+  font-size:13px;
+  margin-top:7px;
 }
 
-.error{
-  background:#fff0f0;
-  color:#b00020;
+.cardActions{
+  display:flex;
+  gap:6px;
+  margin-top:10px;
+}
+
+.cardActions button{
+  border:none;
+  padding:8px 10px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.historyBox{
+  background:white;
+  border-radius:16px;
   padding:15px;
-  border-radius:10px;
+  margin-top:15px;
+}
+
+.historyItem{
+  display:flex;
+  justify-content:space-between;
+  padding:10px;
+  border-bottom:1px solid #ddd;
+}
+
+.historyItem button{
+  border:none;
+  background:none;
+  cursor:pointer;
 }
 
 footer{
   text-align:center;
-  color:#777;
-  padding:30px;
+  padding:30px 15px;
+  color:#667085;
 }
 
 @media(max-width:600px){
-
-  header h1{
-    font-size:27px;
+  .searchRow{
+    flex-direction:column;
   }
 
-  .search input{
-    min-width:0;
+  #searchBtn{
+    padding:13px;
   }
 
-  .search button{
-    padding:0 15px;
+  .logo{
+    font-size:25px;
   }
-
-  .image-card img{
-    height:150px;
-  }
-
 }
 </style>
 </head>
@@ -216,172 +247,205 @@ footer{
 <body>
 
 <header>
-
-<h1>🔎 Fuldur Search</h1>
-
-<p>
-Suuraa, barreeffamaa fi video barbaadi
-</p>
-
+  <div class="logo">🔎 Barbaadi</div>
+  <div class="subtitle">
+    Barbaadi — Barruu, Suuraa, Video, Audio, Kitaaba fi Bakka
+  </div>
 </header>
 
 <div class="container">
 
-<div class="search">
+  <div class="searchBox">
 
-<input
-id="query"
-type="search"
-placeholder="Fakkeenya: Qur'aana"
-autocomplete="off"
->
+    <div class="searchRow">
+      <input
+        id="query"
+        type="search"
+        placeholder="Waan barbaaddu barreessi..."
+      >
+      <button id="searchBtn" onclick="search()">🔎 Barbaadi</button>
+    </div>
 
-<button id="searchButton">
-🔍
-</button>
+    <div class="tabs">
+
+      <button class="active" onclick="setType('all',this)">
+        Hunda
+      </button>
+
+      <button onclick="setType('text',this)">
+        📝 Barruu
+      </button>
+
+      <button onclick="setType('image',this)">
+        🖼️ Suuraa
+      </button>
+
+      <button onclick="setType('video',this)">
+        🎬 Video
+      </button>
+
+      <button onclick="setType('audio',this)">
+        🎵 Audio
+      </button>
+
+      <button onclick="setType('book',this)">
+        📚 Kitaaba
+      </button>
+
+      <button onclick="setType('place',this)">
+        📍 Bakka
+      </button>
+
+      <button onclick="setType('web',this)">
+        🌐 Web
+      </button>
+
+    </div>
+
+    <div class="tools">
+
+      <button onclick="toggleDark()">
+        🌙 Dark
+      </button>
+
+      <button onclick="showHistory()">
+        🕘 Seenaa
+      </button>
+
+      <button onclick="clearResults()">
+        🗑️ Haqi
+      </button>
+
+    </div>
+
+  </div>
+
+  <div id="status"></div>
+
+  <div id="results" class="results"></div>
+
+  <div id="history"></div>
 
 </div>
-
-<div id="status" class="status"></div>
-
-
-<h2>📝 Barreeffama</h2>
-
-<div id="textResults" class="results">
-
-<div class="empty">
-Maal barbaaduu akka barbaaddu barreessi.
-</div>
-
-</div>
-
-
-<h2>🖼️ Suuraa</h2>
-
-<div
-id="imageResults"
-class="images">
-</div>
-
-
-<h2>🎬 Video</h2>
-
-<div
-id="videoResults"
-class="videos">
-</div>
-
-</div>
-
 
 <footer>
-
-Fuldur Search © 2026
-
+  <b>Barbaadi</b><br>
+  Search app Afaan Oromoo fi afaanota gara garaa
 </footer>
 
 
 <script>
 
-const queryInput =
-document.getElementById("query");
+let currentType = "all";
 
-const searchButton =
-document.getElementById("searchButton");
+const queryInput = document.getElementById("query");
+const results = document.getElementById("results");
+const statusBox = document.getElementById("status");
 
-const status =
-document.getElementById("status");
-
-const textResults =
-document.getElementById("textResults");
-
-const imageResults =
-document.getElementById("imageResults");
-
-const videoResults =
-document.getElementById("videoResults");
-
-
-searchButton.addEventListener(
-"click",
-search
-);
-
-
-queryInput.addEventListener(
-"keydown",
-function(event){
-
-if(event.key === "Enter"){
-search();
-}
-
+queryInput.addEventListener("keydown",function(e){
+  if(e.key === "Enter"){
+    search();
+  }
 });
+
+
+function setType(type,button){
+
+  currentType = type;
+
+  document.querySelectorAll(".tabs button")
+    .forEach(b => b.classList.remove("active"));
+
+  button.classList.add("active");
+
+}
 
 
 async function search(){
 
-const query =
-queryInput.value.trim();
+  const q = queryInput.value.trim();
 
-if(!query){
+  if(!q){
+    alert("Maaloo waan barbaaddu barreessi.");
+    return;
+  }
 
-alert(
-"Mee waan barbaaddu barreessi."
-);
+  saveHistory(q);
 
-queryInput.focus();
+  results.innerHTML = "";
 
-return;
+  statusBox.innerHTML = "⏳ Barbaadaa jira...";
+
+  try{
+
+    if(currentType === "all"){
+      await searchAll(q);
+    }
+
+    else if(currentType === "text"){
+      await searchWikipedia(q);
+    }
+
+    else if(currentType === "image"){
+      await searchImages(q);
+    }
+
+    else if(currentType === "video"){
+      await searchVideo(q);
+    }
+
+    else if(currentType === "audio"){
+      await searchAudio(q);
+    }
+
+    else if(currentType === "book"){
+      await searchBooks(q);
+    }
+
+    else if(currentType === "place"){
+      await searchPlaces(q);
+    }
+
+    else if(currentType === "web"){
+      searchWeb(q);
+    }
+
+    statusBox.innerHTML =
+      results.children.length
+      ? "✅ Bu'aan argameera"
+      : "❌ Bu'aan hin argamne";
+
+  }catch(error){
+
+    console.error(error);
+
+    statusBox.innerHTML =
+      "⚠️ Rakkoo uumame. Mee irra deebi'ii yaali.";
+
+  }
 
 }
 
-status.innerHTML =
-"⏳ Barbaadaa jira...";
 
-textResults.innerHTML = "";
+/* =========================
+   ALL
+========================= */
 
-imageResults.innerHTML = "";
+async function searchAll(q){
 
-videoResults.innerHTML = "";
+  const data = await Promise.allSettled([
 
-searchButton.disabled = true;
+    searchWikipedia(q),
 
+    searchImages(q),
 
-const results =
-await Promise.allSettled([
+    searchBooks(q),
 
-wikipediaSearch(query),
+    searchVideo(q),
 
-imageSearch(query),
+    searchAudio(q)
 
-wikimediaVideoSearch(query),
-
-archiveVideoSearch(query)
-
-]);
-
-
-const failed =
-results.filter(
-r => r.status === "rejected"
-).length;
-
-
-if(failed === 0){
-
-status.innerHTML =
-"✅ Search xumurame.";
-
-}else{
-
-status.innerHTML =
-"✅ Search xumurame. Maddoonni tokko tokko hin deebine.";
-
-}
-
-
-searchButton.disabled = false;
+  ]);
 
 }
 
@@ -390,579 +454,664 @@ searchButton.disabled = false;
    WIKIPEDIA
 ========================= */
 
-async function wikipediaSearch(query){
+async function searchWikipedia(q){
 
-const url =
-"https://om.wikipedia.org/w/api.php?" +
+  const url =
+  "https://om.wikipedia.org/w/api.php" +
+  "?action=query" +
+  "&generator=search" +
+  "&gsrsearch=" + encodeURIComponent(q) +
+  "&gsrnamespace=0" +
+  "&gsrlimit=10" +
+  "&prop=extracts|info" +
+  "&exintro=1" +
+  "&explaintext=1" +
+  "&inprop=url" +
+  "&format=json" +
+  "&origin=*";
 
-"action=query" +
+  const response = await fetch(url);
 
-"&generator=search" +
+  const data = await response.json();
 
-"&gsrsearch=" +
-encodeURIComponent(query) +
+  const pages = data.query?.pages || {};
 
-"&gsrnamespace=0" +
+  Object.values(pages).forEach(page => {
 
-"&gsrlimit=10" +
+    addCard({
 
-"&prop=extracts|info" +
+      title: "📝 " + page.title,
 
-"&exintro=1" +
+      text:
+        page.extract ||
+        "Odeeffannoon gahaan hin argamne.",
 
-"&explaintext=1" +
+      link:
+        page.fullurl ||
+        "https://om.wikipedia.org/wiki/" +
+        encodeURIComponent(page.title),
 
-"&inprop=url" +
+      source:"Wikipedia Afaan Oromoo"
 
-"&format=json" +
+    });
 
-"&origin=*";
-
-
-const response =
-await fetch(url);
-
-if(!response.ok){
-
-throw new Error(
-"Wikipedia error"
-);
-
-}
-
-
-const data =
-await response.json();
-
-
-if(
-!data.query ||
-!data.query.pages
-){
-
-textResults.innerHTML =
-`
-<div class="empty">
-📝 Barreeffama hin argamne.
-</div>
-`;
-
-return;
-
-}
-
-
-Object.values(
-data.query.pages
-).forEach(page => {
-
-const card =
-document.createElement("div");
-
-card.className =
-"text-card";
-
-
-const title =
-document.createElement("h3");
-
-title.textContent =
-page.title;
-
-
-const paragraph =
-document.createElement("p");
-
-paragraph.textContent =
-page.extract ||
-"Ibsi hin jiru.";
-
-
-card.appendChild(title);
-
-card.appendChild(paragraph);
-
-
-if(page.fullurl){
-
-const link =
-document.createElement("a");
-
-link.href =
-page.fullurl;
-
-link.target =
-"_blank";
-
-link.rel =
-"noopener noreferrer";
-
-link.textContent =
-"Wikipedia irratti dubbisi →";
-
-card.appendChild(link);
-
-}
-
-
-textResults.appendChild(card);
-
-});
+  });
 
 }
 
 
 /* =========================
-   IMAGE SEARCH
+   IMAGES
 ========================= */
 
-async function imageSearch(query){
+async function searchImages(q){
 
-const url =
-"https://commons.wikimedia.org/w/api.php?" +
+  const url =
+  "https://commons.wikimedia.org/w/api.php" +
+  "?action=query" +
+  "&generator=search" +
+  "&gsrsearch=" + encodeURIComponent(q) +
+  "&gsrnamespace=6" +
+  "&gsrlimit=20" +
+  "&prop=imageinfo" +
+  "&iiprop=url" +
+  "&iiurlwidth=600" +
+  "&format=json" +
+  "&origin=*";
 
-"action=query" +
+  const response = await fetch(url);
 
-"&generator=search" +
+  const data = await response.json();
 
-"&gsrsearch=" +
-encodeURIComponent(query) +
+  const pages = data.query?.pages || {};
 
-"&gsrnamespace=6" +
+  Object.values(pages).forEach(page => {
 
-"&gsrlimit=20" +
+    const info = page.imageinfo?.[0];
 
-"&prop=imageinfo" +
+    if(!info) return;
 
-"&iiprop=url" +
+    addCard({
 
-"&iiurlwidth=500" +
+      title:"🖼️ " + page.title,
 
-"&format=json" +
+      image:
+        info.thumburl ||
+        info.url,
 
-"&origin=*";
+      link:
+        "https://commons.wikimedia.org/wiki/" +
+        encodeURIComponent(page.title),
 
+      source:"Wikimedia Commons"
 
-const response =
-await fetch(url);
+    });
 
-if(!response.ok){
-
-throw new Error(
-"Wikimedia image error"
-);
-
-}
-
-
-const data =
-await response.json();
-
-
-if(
-!data.query ||
-!data.query.pages
-){
-
-imageResults.innerHTML =
-`
-<div class="empty">
-🖼️ Suuraa hin argamne.
-</div>
-`;
-
-return;
-
-}
-
-
-Object.values(
-data.query.pages
-).forEach(page => {
-
-if(!page.imageinfo){
-return;
-}
-
-
-const info =
-page.imageinfo[0];
-
-
-const imageURL =
-info.thumburl ||
-info.url;
-
-
-const title =
-page.title.replace(
-"File:",
-""
-);
-
-
-const card =
-document.createElement("div");
-
-card.className =
-"image-card";
-
-
-const image =
-document.createElement("img");
-
-image.src =
-imageURL;
-
-image.alt =
-title;
-
-image.loading =
-"lazy";
-
-
-const caption =
-document.createElement("p");
-
-caption.textContent =
-title;
-
-
-card.appendChild(image);
-
-card.appendChild(caption);
-
-imageResults.appendChild(card);
-
-});
+  });
 
 }
 
 
 /* =========================
-   WIKIMEDIA VIDEO
+   INTERNET ARCHIVE VIDEO
 ========================= */
 
-async function wikimediaVideoSearch(query){
+async function searchVideo(q){
 
-const url =
-"https://commons.wikimedia.org/w/api.php?" +
+  const url =
+  "https://archive.org/advancedsearch.php" +
+  "?q=" + encodeURIComponent(q) +
+  "%20AND%20mediatype%3Amovies" +
+  "&fl%5B%5D=identifier" +
+  "&fl%5B%5D=title" +
+  "&fl%5B%5D=description" +
+  "&rows=15" +
+  "&page=1" +
+  "&output=json";
 
-"action=query" +
+  const response = await fetch(url);
 
-"&generator=search" +
+  const data = await response.json();
 
-"&gsrsearch=" +
-encodeURIComponent(query) +
+  const docs =
+    data.response?.docs || [];
 
-" filetype:video" +
+  docs.forEach(item => {
 
-"&gsrnamespace=6" +
+    addCard({
 
-"&gsrlimit=20" +
+      title:"🎬 " + (item.title || item.identifier),
 
-"&prop=imageinfo" +
+      text:
+        item.description ||
+        "Video Internet Archive keessatti argame.",
 
-"&iiprop=url" +
+      link:
+        "https://archive.org/details/" +
+        item.identifier,
 
-"&format=json" +
+      source:"Internet Archive"
 
-"&origin=*";
+    });
 
-
-const response =
-await fetch(url);
-
-if(!response.ok){
-
-throw new Error(
-"Wikimedia video error"
-);
-
-}
-
-
-const data =
-await response.json();
-
-
-if(
-!data.query ||
-!data.query.pages
-){
-
-return;
-
-}
-
-
-Object.values(
-data.query.pages
-).forEach(page => {
-
-if(!page.imageinfo){
-return;
-}
-
-
-const info =
-page.imageinfo[0];
-
-
-const videoURL =
-info.url || "";
-
-
-if(
-!isVideo(videoURL)
-){
-
-return;
-
-}
-
-
-createVideoCard(
-videoURL,
-page.title.replace("File:",""),
-"Wikimedia Commons"
-);
-
-});
+  });
 
 }
 
 
 /* =========================
-   INTERNET ARCHIVE
+   AUDIO
 ========================= */
 
-async function archiveVideoSearch(query){
+async function searchAudio(q){
 
-const url =
-"https://archive.org/advancedsearch.php?" +
+  const url =
+  "https://archive.org/advancedsearch.php" +
+  "?q=" + encodeURIComponent(q) +
+  "%20AND%20mediatype%3Aaudio" +
+  "&fl%5B%5D=identifier" +
+  "&fl%5B%5D=title" +
+  "&fl%5B%5D=description" +
+  "&rows=15" +
+  "&page=1" +
+  "&output=json";
 
-"q=" +
-encodeURIComponent(
-query +
-" AND mediatype:movies"
-) +
+  const response = await fetch(url);
 
-"&fl[]=identifier" +
+  const data = await response.json();
 
-"&fl[]=title" +
+  const docs =
+    data.response?.docs || [];
 
-"&rows=10" +
+  docs.forEach(item => {
 
-"&page=1" +
+    addCard({
 
-"&output=json";
+      title:"🎵 " + (item.title || item.identifier),
 
+      text:
+        item.description ||
+        "Audio Internet Archive keessatti argame.",
 
-const response =
-await fetch(url);
+      link:
+        "https://archive.org/details/" +
+        item.identifier,
 
+      source:"Internet Archive"
 
-if(!response.ok){
+    });
 
-throw new Error(
-"Internet Archive error"
-);
+  });
 
 }
 
 
-const data =
-await response.json();
+/* =========================
+   BOOKS
+========================= */
 
+async function searchBooks(q){
+
+  const url =
+    "https://openlibrary.org/search.json?q=" +
+    encodeURIComponent(q) +
+    "&limit=15";
+
+  const response = await fetch(url);
+
+  const data = await response.json();
+
+  const docs = data.docs || [];
+
+  docs.forEach(book => {
+
+    const authors =
+      book.author_name
+      ? book.author_name.join(", ")
+      : "Barreessaan hin beekamne";
+
+    addCard({
+
+      title:"📚 " +
+        (book.title || "Kitaaba"),
+
+      text:
+        "Barreessaa: " +
+        authors +
+        "<br>" +
+        "Bara: " +
+        (book.first_publish_year || "—"),
+
+      link:
+        "https://openlibrary.org" +
+        (book.key || ""),
+
+      source:"Open Library"
+
+    });
+
+  });
+
+}
+
+
+/* =========================
+   PLACES
+========================= */
+
+async function searchPlaces(q){
+
+  const url =
+    "https://nominatim.openstreetmap.org/search" +
+    "?format=jsonv2" +
+    "&q=" + encodeURIComponent(q) +
+    "&limit=15" +
+    "&accept-language=om";
+
+  const response = await fetch(url);
+
+  const data = await response.json();
+
+  data.forEach(place => {
+
+    const map =
+      "https://www.openstreetmap.org/" +
+      "?mlat=" + place.lat +
+      "&mlon=" + place.lon +
+      "#map=15/" +
+      place.lat +
+      "/" +
+      place.lon;
+
+    addCard({
+
+      title:"📍 " + place.display_name,
+
+      text:
+        "Latitude: " +
+        place.lat +
+        "<br>Longitude: " +
+        place.lon,
+
+      link:map,
+
+      source:"OpenStreetMap"
+
+    });
+
+  });
+
+}
+
+
+/* =========================
+   WEB
+========================= */
+
+function searchWeb(q){
+
+  const google =
+    "https://www.google.com/search?q=" +
+    encodeURIComponent(q);
+
+  const bing =
+    "https://www.bing.com/search?q=" +
+    encodeURIComponent(q);
+
+  const duck =
+    "https://duckduckgo.com/?q=" +
+    encodeURIComponent(q);
+
+  addCard({
+
+    title:"🌐 Web Search",
+
+    text:
+      "Madda web keessaa barbaadi.",
+
+    link:duck,
+
+    source:"DuckDuckGo"
+
+  });
+
+  addCard({
+
+    title:"🔎 Bing",
+
+    text:
+      "Barbaacha Bing banuuf cuqaasi.",
+
+    link:bing,
+
+    source:"Bing"
+
+  });
+
+  addCard({
+
+    title:"🔍 Google",
+
+    text:
+      "Barbaacha Google banuuf cuqaasi.",
+
+    link:google,
+
+    source:"Google"
+
+  });
+
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+function addCard(data){
+
+  const card =
+    document.createElement("div");
+
+  card.className = "card";
+
+  let html = "";
+
+  if(data.image){
+
+    html +=
+      `<img src="${escapeHtml(data.image)}"
+       loading="lazy"
+       onerror="this.style.display='none'">`;
+
+  }
+
+  html +=
+    `<h3>${escapeHtml(data.title || "")}</h3>`;
+
+  if(data.text){
+
+    html +=
+      `<p>${data.text}</p>`;
+
+  }
+
+  if(data.source){
+
+    html +=
+      `<div class="small">
+       📌 ${escapeHtml(data.source)}
+       </div>`;
+
+  }
+
+  if(data.link){
+
+    html +=
+      `<a href="${escapeHtml(data.link)}"
+       target="_blank"
+       rel="noopener">
+       Bana
+       </a>`;
+
+    html +=
+      `<div class="cardActions">
+
+        <button onclick="copyText('${escapeJs(data.link)}')">
+          📋 Copy
+        </button>
+
+        <button onclick="shareResult('${escapeJs(data.title || '')}','${escapeJs(data.link)}')">
+          📤 Share
+        </button>
+
+        <button onclick="favorite('${escapeJs(data.title || '')}','${escapeJs(data.link)}')">
+          ⭐
+        </button>
+
+      </div>`;
+
+  }
+
+  card.innerHTML = html;
+
+  results.appendChild(card);
+
+}
+
+
+/* =========================
+   DARK MODE
+========================= */
+
+function toggleDark(){
+
+  document.body.classList.toggle("dark");
+
+  localStorage.setItem(
+    "barbaadiDark",
+    document.body.classList.contains("dark")
+  );
+
+}
+
+
+/* =========================
+   HISTORY
+========================= */
+
+function saveHistory(q){
+
+  let history =
+    JSON.parse(
+      localStorage.getItem("barbaadiHistory") || "[]"
+    );
+
+  history =
+    history.filter(x => x !== q);
+
+  history.unshift(q);
+
+  history =
+    history.slice(0,20);
+
+  localStorage.setItem(
+    "barbaadiHistory",
+    JSON.stringify(history)
+  );
+
+}
+
+
+function showHistory(){
+
+  const box =
+    document.getElementById("history");
+
+  let history =
+    JSON.parse(
+      localStorage.getItem("barbaadiHistory") || "[]"
+    );
+
+  if(!history.length){
+
+    box.innerHTML =
+      `<div class="historyBox">
+       Seenaa barbaachaa hin jiru.
+       </div>`;
+
+    return;
+
+  }
+
+  let html =
+    `<div class="historyBox">
+      <h3>🕘 Seenaa Barbaachaa</h3>`;
+
+  history.forEach(item => {
+
+    html +=
+      `<div class="historyItem">
+
+        <span>${escapeHtml(item)}</span>
+
+        <button onclick="useHistory('${escapeJs(item)}')">
+          🔎
+        </button>
+
+      </div>`;
+
+  });
+
+  html += "</div>";
+
+  box.innerHTML = html;
+
+}
+
+
+function useHistory(q){
+
+  queryInput.value = q;
+
+  search();
+
+}
+
+
+/* =========================
+   FAVORITE
+========================= */
+
+function favorite(title,link){
+
+  let fav =
+    JSON.parse(
+      localStorage.getItem("barbaadiFavorites") || "[]"
+    );
+
+  if(!fav.some(x => x.link === link)){
+
+    fav.push({
+      title:title,
+      link:link
+    });
+
+    localStorage.setItem(
+      "barbaadiFavorites",
+      JSON.stringify(fav)
+    );
+
+    alert("⭐ Kuusaa keessatti galmaa'e.");
+
+  }else{
+
+    alert("Dursee kuusaa keessa jira.");
+
+  }
+
+}
+
+
+/* =========================
+   SHARE
+========================= */
+
+async function shareResult(title,link){
+
+  if(navigator.share){
+
+    await navigator.share({
+
+      title:title,
+
+      text:title,
+
+      url:link
+
+    });
+
+  }else{
+
+    copyText(link);
+
+    alert("Linkiin copy godhame.");
+
+  }
+
+}
+
+
+/* =========================
+   COPY
+========================= */
+
+async function copyText(text){
+
+  try{
+
+    await navigator.clipboard.writeText(text);
+
+    alert("📋 Copy godhame.");
+
+  }catch(e){
+
+    alert("Copy gochuun hin danda'amne.");
+
+  }
+
+}
+
+
+/* =========================
+   CLEAR
+========================= */
+
+function clearResults(){
+
+  results.innerHTML = "";
+
+  statusBox.innerHTML = "";
+
+}
+
+
+/* =========================
+   SECURITY
+========================= */
+
+function escapeHtml(text){
+
+  return String(text)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+function escapeJs(text){
+
+  return String(text)
+    .replace(/\\/g,"\\\\")
+    .replace(/'/g,"\\'")
+    .replace(/"/g,"&quot;")
+    .replace(/\n/g," ");
+
+}
+
+
+/* =========================
+   LOAD SETTINGS
+========================= */
 
 if(
-!data.response ||
-!data.response.docs
+  localStorage.getItem("barbaadiDark") === "true"
 ){
 
-return;
-
-}
-
-
-for(
-const item of data.response.docs
-){
-
-if(!item.identifier){
-continue;
-}
-
-
-const metadataURL =
-"https://archive.org/metadata/" +
-item.identifier;
-
-
-try{
-
-const metaResponse =
-await fetch(metadataURL);
-
-const meta =
-await metaResponse.json();
-
-
-if(!meta.files){
-continue;
-}
-
-
-const videoFile =
-meta.files.find(
-file =>
-isVideo(file.name || "")
-);
-
-
-if(!videoFile){
-continue;
-}
-
-
-const videoURL =
-"https://archive.org/download/" +
-item.identifier +
-"/" +
-encodeURIComponent(
-videoFile.name
-);
-
-
-createVideoCard(
-videoURL,
-item.title ||
-item.identifier,
-"Internet Archive"
-);
-
-
-}catch(error){
-
-console.log(
-"Archive item error",
-error
-);
-
-}
-
-}
-
-}
-
-
-/* =========================
-   VIDEO CARD
-========================= */
-
-function createVideoCard(
-videoURL,
-title,
-source
-){
-
-const card =
-document.createElement("div");
-
-card.className =
-"video-card";
-
-
-const video =
-document.createElement("video");
-
-video.controls =
-true;
-
-video.preload =
-"metadata";
-
-video.src =
-videoURL;
-
-
-const info =
-document.createElement("div");
-
-info.className =
-"video-info";
-
-
-const heading =
-document.createElement("h3");
-
-heading.textContent =
-title;
-
-
-const sourceText =
-document.createElement("p");
-
-sourceText.textContent =
-"Madda: " + source;
-
-
-const link =
-document.createElement("a");
-
-link.href =
-videoURL;
-
-link.target =
-"_blank";
-
-link.rel =
-"noopener noreferrer";
-
-link.textContent =
-"🔗 Video bana →";
-
-
-info.appendChild(heading);
-
-info.appendChild(sourceText);
-
-info.appendChild(link);
-
-
-card.appendChild(video);
-
-card.appendChild(info);
-
-
-videoResults.appendChild(card);
-
-}
-
-
-/* =========================
-   VIDEO CHECK
-========================= */
-
-function isVideo(url){
-
-const lower =
-url.toLowerCase();
-
-return (
-
-lower.includes(".mp4") ||
-
-lower.includes(".webm") ||
-
-lower.includes(".ogv") ||
-
-lower.includes(".mov") ||
-
-lower.includes(".m4v")
-
-);
+  document.body.classList.add("dark");
 
 }
 
