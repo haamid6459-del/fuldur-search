@@ -9,137 +9,103 @@
 <style>
 *{
   box-sizing:border-box;
-  margin:0;
-  padding:0;
-  font-family:Arial,sans-serif;
 }
 
 body{
+  margin:0;
+  font-family:Arial,sans-serif;
   background:#f5f7fb;
   color:#222;
-  transition:.3s;
-}
-
-body.dark{
-  background:#121212;
-  color:#eee;
 }
 
 header{
-  background:linear-gradient(135deg,#0066ff,#6a00ff);
+  background:linear-gradient(135deg,#0757d9,#7024d6);
   color:white;
-  padding:25px 15px;
   text-align:center;
+  padding:30px 15px;
 }
 
 header h1{
+  margin:0 0 8px;
   font-size:32px;
-  margin-bottom:8px;
 }
 
 header p{
-  font-size:15px;
-  opacity:.9;
+  margin:0;
 }
 
 .container{
-  max-width:1000px;
+  max-width:950px;
   margin:auto;
   padding:20px;
 }
 
-.search-box{
+.search{
   display:flex;
   gap:8px;
   margin:20px 0;
 }
 
-.search-box input{
+.search input{
   flex:1;
-  padding:15px;
+  padding:16px;
   border:1px solid #ddd;
   border-radius:12px;
-  font-size:16px;
+  font-size:17px;
   outline:none;
 }
 
-.search-box button{
-  border:none;
+.search button{
+  border:0;
   border-radius:12px;
-  padding:0 15px;
-  cursor:pointer;
+  padding:0 18px;
+  background:#0757d9;
+  color:white;
   font-size:18px;
-}
-
-.search-btn{
-  background:#0066ff;
-  color:white;
-}
-
-.voice-btn{
-  background:#eee;
-}
-
-body.dark .voice-btn{
-  background:#333;
-  color:white;
-}
-
-.menu{
-  display:flex;
-  gap:8px;
-  overflow-x:auto;
-  margin-bottom:20px;
-}
-
-.menu button{
-  white-space:nowrap;
-  border:none;
-  padding:10px 15px;
-  border-radius:20px;
-  background:#e8ecf5;
   cursor:pointer;
 }
 
-body.dark .menu button{
-  background:#292929;
-  color:white;
+.search button:active{
+  transform:scale(.96);
 }
 
-.section-title{
-  margin:20px 0 12px;
-  font-size:21px;
+.status{
+  text-align:center;
+  padding:15px;
+  color:#555;
 }
 
-.text-result{
+h2{
+  margin-top:25px;
+}
+
+.results{
+  display:grid;
+  gap:15px;
+}
+
+.text-card{
   background:white;
   padding:18px;
-  border-radius:15px;
-  margin-bottom:15px;
-  box-shadow:0 3px 12px #00000010;
+  border-radius:14px;
+  box-shadow:0 3px 12px #0001;
 }
 
-body.dark .text-result{
-  background:#1e1e1e;
+.text-card h3{
+  margin-top:0;
+  color:#0757d9;
 }
 
-.text-result h3{
-  color:#0066ff;
-  margin-bottom:8px;
-}
-
-.text-result p{
+.text-card p{
   line-height:1.6;
 }
 
-.text-result a{
-  display:inline-block;
-  margin-top:10px;
-  color:#0066ff;
+.text-card a{
+  color:#0757d9;
   text-decoration:none;
 }
 
-.image-grid{
+.images{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
   gap:15px;
@@ -147,14 +113,9 @@ body.dark .text-result{
 
 .image-card{
   background:white;
-  border-radius:15px;
+  border-radius:14px;
   overflow:hidden;
-  box-shadow:0 3px 12px #00000015;
-  position:relative;
-}
-
-body.dark .image-card{
-  background:#1e1e1e;
+  box-shadow:0 3px 12px #0001;
 }
 
 .image-card img{
@@ -164,66 +125,29 @@ body.dark .image-card{
   display:block;
 }
 
-.image-info{
+.image-card p{
   padding:10px;
-}
-
-.image-info p{
+  margin:0;
   font-size:14px;
-  line-height:1.4;
 }
 
-.actions{
-  display:flex;
-  gap:6px;
-  margin-top:8px;
-}
-
-.actions button{
-  border:none;
-  padding:7px 10px;
-  border-radius:8px;
-  cursor:pointer;
-  background:#edf1f7;
-}
-
-body.dark .actions button{
-  background:#333;
-  color:white;
-}
-
-.loading{
-  text-align:center;
-  padding:30px;
-  font-size:18px;
+.error{
+  background:#fff0f0;
+  color:#b00020;
+  padding:15px;
+  border-radius:10px;
 }
 
 .empty{
   text-align:center;
-  padding:30px;
+  padding:25px;
   color:#777;
 }
 
 footer{
   text-align:center;
-  padding:30px 10px;
-  margin-top:30px;
   color:#777;
-}
-
-#darkMode{
-  position:fixed;
-  right:15px;
-  bottom:15px;
-  width:50px;
-  height:50px;
-  border:none;
-  border-radius:50%;
-  background:#111;
-  color:white;
-  font-size:20px;
-  cursor:pointer;
-  z-index:10;
+  padding:30px;
 }
 
 @media(max-width:600px){
@@ -231,16 +155,12 @@ footer{
     font-size:27px;
   }
 
-  .search-box input{
+  .search input{
     min-width:0;
   }
 
-  .image-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .image-card img{
-    height:140px;
+  .search button{
+    padding:0 15px;
   }
 }
 </style>
@@ -250,101 +170,349 @@ footer{
 
 <header>
   <h1>🔎 Fuldur Search</h1>
-  <p>Suuraa, barreeffamaa fi odeeffannoo barbaadi</p>
+  <p>Suuraa fi barreeffama barbaadi</p>
 </header>
 
 <div class="container">
 
-  <div class="search-box">
+  <div class="search">
+
     <input
-      id="searchInput"
-      type="text"
-      placeholder="Maal barbaadda?"
-      onkeydown="if(event.key==='Enter') searchAll()"
+      id="query"
+      type="search"
+      placeholder="Fakkeenya: Qur'aana"
+      autocomplete="off"
     >
 
-    <button class="voice-btn" onclick="startVoice()">🎙️</button>
+    <button id="searchButton">
+      🔍
+    </button>
 
-    <button class="search-btn" onclick="searchAll()">🔍</button>
   </div>
 
-  <div class="menu">
-    <button onclick="showHistory()">🕘 History</button>
-    <button onclick="showFavorites()">⭐ Favorite</button>
-    <button onclick="clearHistory()">🗑️ History Haqi</button>
+  <div id="status" class="status"></div>
+
+  <h2>📝 Barreeffama</h2>
+
+  <div id="textResults" class="results">
+    <div class="empty">
+      Maal barbaaduu akka barbaaddu barreessi.
+    </div>
   </div>
 
-  <div id="status"></div>
+  <h2>🖼️ Suuraa</h2>
 
-  <h2 class="section-title">📝 Barreeffama</h2>
-  <div id="textResults"></div>
-
-  <h2 class="section-title">🖼️ Suuraa</h2>
-  <div id="imageResults" class="image-grid"></div>
+  <div id="imageResults" class="images">
+  </div>
 
 </div>
 
 <footer>
-  <p>© 2026 Fuldur Search</p>
-  <p>Barbaacha salphaa, saffisaa fi bilisaa</p>
+  Fuldur Search © 2026
 </footer>
-
-<button id="darkMode" onclick="toggleDark()">🌙</button>
 
 <script>
 
-const searchInput = document.getElementById("searchInput");
-const textResults = document.getElementById("textResults");
-const imageResults = document.getElementById("imageResults");
-const statusBox = document.getElementById("status");
+const queryInput =
+  document.getElementById("query");
 
-let favorites =
-  JSON.parse(localStorage.getItem("fuldurFavorites")) || [];
+const searchButton =
+  document.getElementById("searchButton");
 
-let history =
-  JSON.parse(localStorage.getItem("fuldurHistory")) || [];
+const status =
+  document.getElementById("status");
+
+const textResults =
+  document.getElementById("textResults");
+
+const imageResults =
+  document.getElementById("imageResults");
 
 
-/* =========================
-   SEARCH ALL
-========================= */
+/* SEARCH BUTTON */
 
-async function searchAll(){
+searchButton.addEventListener(
+  "click",
+  search
+);
 
-  const query = searchInput.value.trim();
+
+/* ENTER KEY */
+
+queryInput.addEventListener(
+  "keydown",
+  function(event){
+
+    if(event.key === "Enter"){
+      search();
+    }
+
+  }
+);
+
+
+/* MAIN SEARCH */
+
+async function search(){
+
+  const query =
+    queryInput.value.trim();
 
   if(!query){
-    alert("Maal barbaaduu akka barbaaddu barreessi.");
+
+    alert(
+      "Mee waan barbaaddu barreessi."
+    );
+
+    queryInput.focus();
+
     return;
   }
 
-  addHistory(query);
-
-  statusBox.innerHTML =
-    `<div class="loading">⏳ Barbaadaa jira...</div>`;
+  status.innerHTML =
+    "⏳ Barbaadaa jira...";
 
   textResults.innerHTML = "";
   imageResults.innerHTML = "";
 
-  await Promise.all([
-    searchWikipedia(query),
-    searchImages(query)
-  ]);
-
-  statusBox.innerHTML = "";
-}
-
-
-/* =========================
-   WIKIPEDIA
-========================= */
-
-async function searchWikipedia(query){
+  searchButton.disabled = true;
 
   try{
 
-    const url =
-      "https://om.wikipedia.org/w/api.php" +
-      "?action=query" +
-      "&generator=search" +
-      "&gs
+    await Promise.all([
+      wikipediaSearch(query),
+      imageSearch(query)
+    ]);
+
+    status.innerHTML =
+      "✅ Search xumurame.";
+
+  }catch(error){
+
+    console.error(error);
+
+    status.innerHTML =
+      "❌ Rakkoon uumame. Internet kee ilaali.";
+
+  }
+
+  searchButton.disabled = false;
+
+}
+
+
+/* WIKIPEDIA SEARCH */
+
+async function wikipediaSearch(query){
+
+  const url =
+    "https://om.wikipedia.org/w/api.php?" +
+    "action=query" +
+    "&generator=search" +
+    "&gsrsearch=" +
+    encodeURIComponent(query) +
+    "&gsrnamespace=0" +
+    "&gsrlimit=10" +
+    "&prop=extracts|info" +
+    "&exintro=1" +
+    "&explaintext=1" +
+    "&inprop=url" +
+    "&format=json" +
+    "&origin=*";
+
+  const response =
+    await fetch(url);
+
+  if(!response.ok){
+
+    throw new Error(
+      "Wikipedia API error"
+    );
+
+  }
+
+  const data =
+    await response.json();
+
+  if(
+    !data.query ||
+    !data.query.pages
+  ){
+
+    textResults.innerHTML =
+      `<div class="empty">
+        📝 Barreeffama hin argamne.
+      </div>`;
+
+    return;
+  }
+
+  const pages =
+    Object.values(
+      data.query.pages
+    );
+
+  pages.forEach(page => {
+
+    const card =
+      document.createElement("div");
+
+    card.className =
+      "text-card";
+
+    const title =
+      document.createElement("h3");
+
+    title.textContent =
+      page.title;
+
+    const paragraph =
+      document.createElement("p");
+
+    paragraph.textContent =
+      page.extract ||
+      "Ibsi hin jiru.";
+
+    card.appendChild(title);
+    card.appendChild(paragraph);
+
+    if(page.fullurl){
+
+      const link =
+        document.createElement("a");
+
+      link.href =
+        page.fullurl;
+
+      link.target =
+        "_blank";
+
+      link.rel =
+        "noopener noreferrer";
+
+      link.textContent =
+        "Wikipedia irratti dubbisi →";
+
+      card.appendChild(link);
+
+    }
+
+    textResults.appendChild(card);
+
+  });
+
+}
+
+
+/* IMAGE SEARCH */
+
+async function imageSearch(query){
+
+  const url =
+    "https://commons.wikimedia.org/w/api.php?" +
+    "action=query" +
+    "&generator=search" +
+    "&gsrsearch=" +
+    encodeURIComponent(query) +
+    "&gsrnamespace=6" +
+    "&gsrlimit=20" +
+    "&prop=imageinfo" +
+    "&iiprop=url" +
+    "&iiurlwidth=500" +
+    "&format=json" +
+    "&origin=*";
+
+  const response =
+    await fetch(url);
+
+  if(!response.ok){
+
+    throw new Error(
+      "Wikimedia API error"
+    );
+
+  }
+
+  const data =
+    await response.json();
+
+  if(
+    !data.query ||
+    !data.query.pages
+  ){
+
+    imageResults.innerHTML =
+      `<div class="empty">
+        🖼️ Suuraa hin argamne.
+      </div>`;
+
+    return;
+  }
+
+  const pages =
+    Object.values(
+      data.query.pages
+    );
+
+  pages.forEach(page => {
+
+    if(!page.imageinfo){
+      return;
+    }
+
+    const info =
+      page.imageinfo[0];
+
+    const imageURL =
+      info.thumburl || info.url;
+
+    const title =
+      page.title.replace(
+        "File:",
+        ""
+      );
+
+    const card =
+      document.createElement("div");
+
+    card.className =
+      "image-card";
+
+    const image =
+      document.createElement("img");
+
+    image.src =
+      imageURL;
+
+    image.alt =
+      title;
+
+    image.loading =
+      "lazy";
+
+    image.onerror =
+      function(){
+
+        card.remove();
+
+      };
+
+    const caption =
+      document.createElement("p");
+
+    caption.textContent =
+      title;
+
+    card.appendChild(image);
+    card.appendChild(caption);
+
+    imageResults.appendChild(card);
+
+  });
+
+}
+
+</script>
+
+</body>
+  </html>
