@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="om">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Fuldur Search</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  background:#f5f7fb;
+  color:#222;
+  transition:.3s;
+}
+
+body.dark{
+  background:#121212;
+  color:#eee;
+}
+
+header{
+  background:linear-gradient(135deg,#0066ff,#6a00ff);
+  color:white;
+  padding:25px 15px;
+  text-align:center;
+}
+
+header h1{
+  font-size:32px;
+  margin-bottom:8px;
+}
+
+header p{
+  font-size:15px;
+  opacity:.9;
+}
+
+.container{
+  max-width:1000px;
+  margin:auto;
+  padding:20px;
+}
+
+.search-box{
+  display:flex;
+  gap:8px;
+  margin:20px 0;
+}
+
+.search-box input{
+  flex:1;
+  padding:15px;
+  border:1px solid #ddd;
+  border-radius:12px;
+  font-size:16px;
+  outline:none;
+}
+
+.search-box button{
+  border:none;
+  border-radius:12px;
+  padding:0 15px;
+  cursor:pointer;
+  font-size:18px;
+}
+
+.search-btn{
+  background:#0066ff;
+  color:white;
+}
+
+.voice-btn{
+  background:#eee;
+}
+
+body.dark .voice-btn{
+  background:#333;
+  color:white;
+}
+
+.menu{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  margin-bottom:20px;
+}
+
+.menu button{
+  white-space:nowrap;
+  border:none;
+  padding:10px 15px;
+  border-radius:20px;
+  background:#e8ecf5;
+  cursor:pointer;
+}
+
+body.dark .menu button{
+  background:#292929;
+  color:white;
+}
+
+.section-title{
+  margin:20px 0 12px;
+  font-size:21px;
+}
+
+.text-result{
+  background:white;
+  padding:18px;
+  border-radius:15px;
+  margin-bottom:15px;
+  box-shadow:0 3px 12px #00000010;
+}
+
+body.dark .text-result{
+  background:#1e1e1e;
+}
+
+.text-result h3{
+  color:#0066ff;
+  margin-bottom:8px;
+}
+
+.text-result p{
+  line-height:1.6;
+}
+
+.text-result a{
+  display:inline-block;
+  margin-top:10px;
+  color:#0066ff;
+  text-decoration:none;
+}
+
+.image-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:15px;
+}
+
+.image-card{
+  background:white;
+  border-radius:15px;
+  overflow:hidden;
+  box-shadow:0 3px 12px #00000015;
+  position:relative;
+}
+
+body.dark .image-card{
+  background:#1e1e1e;
+}
+
+.image-card img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  display:block;
+}
+
+.image-info{
+  padding:10px;
+}
+
+.image-info p{
+  font-size:14px;
+  line-height:1.4;
+}
+
+.actions{
+  display:flex;
+  gap:6px;
+  margin-top:8px;
+}
+
+.actions button{
+  border:none;
+  padding:7px 10px;
+  border-radius:8px;
+  cursor:pointer;
+  background:#edf1f7;
+}
+
+body.dark .actions button{
+  background:#333;
+  color:white;
+}
+
+.loading{
+  text-align:center;
+  padding:30px;
+  font-size:18px;
+}
+
+.empty{
+  text-align:center;
+  padding:30px;
+  color:#777;
+}
+
+footer{
+  text-align:center;
+  padding:30px 10px;
+  margin-top:30px;
+  color:#777;
+}
+
+#darkMode{
+  position:fixed;
+  right:15px;
+  bottom:15px;
+  width:50px;
+  height:50px;
+  border:none;
+  border-radius:50%;
+  background:#111;
+  color:white;
+  font-size:20px;
+  cursor:pointer;
+  z-index:10;
+}
+
+@media(max-width:600px){
+  header h1{
+    font-size:27px;
+  }
+
+  .search-box input{
+    min-width:0;
+  }
+
+  .image-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .image-card img{
+    height:140px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🔎 Fuldur Search</h1>
+  <p>Suuraa, barreeffamaa fi odeeffannoo barbaadi</p>
+</header>
+
+<div class="container">
+
+  <div class="search-box">
+    <input
+      id="searchInput"
+      type="text"
+      placeholder="Maal barbaadda?"
+      onkeydown="if(event.key==='Enter') searchAll()"
+    >
+
+    <button class="voice-btn" onclick="startVoice()">🎙️</button>
+
+    <button class="search-btn" onclick="searchAll()">🔍</button>
+  </div>
+
+  <div class="menu">
+    <button onclick="showHistory()">🕘 History</button>
+    <button onclick="showFavorites()">⭐ Favorite</button>
+    <button onclick="clearHistory()">🗑️ History Haqi</button>
+  </div>
+
+  <div id="status"></div>
+
+  <h2 class="section-title">📝 Barreeffama</h2>
+  <div id="textResults"></div>
+
+  <h2 class="section-title">🖼️ Suuraa</h2>
+  <div id="imageResults" class="image-grid"></div>
+
+</div>
+
+<footer>
+  <p>© 2026 Fuldur Search</p>
+  <p>Barbaacha salphaa, saffisaa fi bilisaa</p>
+</footer>
+
+<button id="darkMode" onclick="toggleDark()">🌙</button>
+
+<script>
+
+const searchInput = document.getElementById("searchInput");
+const textResults = document.getElementById("textResults");
+const imageResults = document.getElementById("imageResults");
+const statusBox = document.getElementById("status");
+
+let favorites =
+  JSON.parse(localStorage.getItem("fuldurFavorites")) || [];
+
+let history =
+  JSON.parse(localStorage.getItem("fuldurHistory")) || [];
+
+
+/* =========================
+   SEARCH ALL
+========================= */
+
+async function searchAll(){
+
+  const query = searchInput.value.trim();
+
+  if(!query){
+    alert("Maal barbaaduu akka barbaaddu barreessi.");
+    return;
+  }
+
+  addHistory(query);
+
+  statusBox.innerHTML =
+    `<div class="loading">⏳ Barbaadaa jira...</div>`;
+
+  textResults.innerHTML = "";
+  imageResults.innerHTML = "";
+
+  await Promise.all([
+    searchWikipedia(query),
+    searchImages(query)
+  ]);
+
+  statusBox.innerHTML = "";
+}
+
+
+/* =========================
+   WIKIPEDIA
+========================= */
+
+async function searchWikipedia(query){
+
+  try{
+
+    const url =
+      "https://om.wikipedia.org/w/api.php" +
+      "?action=query" +
+      "&generator=search" +
+      "&gs
