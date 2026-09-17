@@ -35,7 +35,7 @@ header p{
 }
 
 .container{
-  max-width:950px;
+  max-width:1000px;
   margin:auto;
   padding:20px;
 }
@@ -65,8 +65,8 @@ header p{
   cursor:pointer;
 }
 
-.search button:active{
-  transform:scale(.96);
+.search button:disabled{
+  opacity:.6;
 }
 
 .status{
@@ -76,7 +76,7 @@ header p{
 }
 
 h2{
-  margin-top:25px;
+  margin-top:30px;
 }
 
 .results{
@@ -107,7 +107,8 @@ h2{
 
 .images{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  grid-template-columns:
+  repeat(auto-fit,minmax(180px,1fr));
   gap:15px;
 }
 
@@ -131,17 +132,57 @@ h2{
   font-size:14px;
 }
 
-.error{
-  background:#fff0f0;
-  color:#b00020;
+.videos{
+  display:grid;
+  gap:20px;
+}
+
+.video-card{
+  background:white;
+  border-radius:15px;
+  overflow:hidden;
+  box-shadow:0 3px 12px #0001;
+}
+
+.video-card video{
+  width:100%;
+  max-height:450px;
+  background:#000;
+  display:block;
+}
+
+.video-info{
   padding:15px;
-  border-radius:10px;
+}
+
+.video-info h3{
+  margin:0 0 8px;
+  font-size:18px;
+}
+
+.video-info p{
+  color:#666;
+  font-size:14px;
+}
+
+.video-info a{
+  display:inline-block;
+  margin-top:8px;
+  color:#0757d9;
+  text-decoration:none;
 }
 
 .empty{
   text-align:center;
   padding:25px;
   color:#777;
+}
+
+.error{
+  background:#fff0f0;
+  color:#b00020;
+  padding:15px;
+  border-radius:10px;
 }
 
 footer{
@@ -151,6 +192,7 @@ footer{
 }
 
 @media(max-width:600px){
+
   header h1{
     font-size:27px;
   }
@@ -162,6 +204,11 @@ footer{
   .search button{
     padding:0 15px;
   }
+
+  .image-card img{
+    height:150px;
+  }
+
 }
 </style>
 </head>
@@ -169,346 +216,753 @@ footer{
 <body>
 
 <header>
-  <h1>🔎 Fuldur Search</h1>
-  <p>Suuraa fi barreeffama barbaadi</p>
+
+<h1>🔎 Fuldur Search</h1>
+
+<p>
+Suuraa, barreeffamaa fi video barbaadi
+</p>
+
 </header>
 
 <div class="container">
 
-  <div class="search">
+<div class="search">
 
-    <input
-      id="query"
-      type="search"
-      placeholder="Fakkeenya: Qur'aana"
-      autocomplete="off"
-    >
+<input
+id="query"
+type="search"
+placeholder="Fakkeenya: Qur'aana"
+autocomplete="off"
+>
 
-    <button id="searchButton">
-      🔍
-    </button>
-
-  </div>
-
-  <div id="status" class="status"></div>
-
-  <h2>📝 Barreeffama</h2>
-
-  <div id="textResults" class="results">
-    <div class="empty">
-      Maal barbaaduu akka barbaaddu barreessi.
-    </div>
-  </div>
-
-  <h2>🖼️ Suuraa</h2>
-
-  <div id="imageResults" class="images">
-  </div>
+<button id="searchButton">
+🔍
+</button>
 
 </div>
 
+<div id="status" class="status"></div>
+
+
+<h2>📝 Barreeffama</h2>
+
+<div id="textResults" class="results">
+
+<div class="empty">
+Maal barbaaduu akka barbaaddu barreessi.
+</div>
+
+</div>
+
+
+<h2>🖼️ Suuraa</h2>
+
+<div
+id="imageResults"
+class="images">
+</div>
+
+
+<h2>🎬 Video</h2>
+
+<div
+id="videoResults"
+class="videos">
+</div>
+
+</div>
+
+
 <footer>
-  Fuldur Search © 2026
+
+Fuldur Search © 2026
+
 </footer>
+
 
 <script>
 
 const queryInput =
-  document.getElementById("query");
+document.getElementById("query");
 
 const searchButton =
-  document.getElementById("searchButton");
+document.getElementById("searchButton");
 
 const status =
-  document.getElementById("status");
+document.getElementById("status");
 
 const textResults =
-  document.getElementById("textResults");
+document.getElementById("textResults");
 
 const imageResults =
-  document.getElementById("imageResults");
+document.getElementById("imageResults");
 
+const videoResults =
+document.getElementById("videoResults");
 
-/* SEARCH BUTTON */
 
 searchButton.addEventListener(
-  "click",
-  search
+"click",
+search
 );
 
-
-/* ENTER KEY */
 
 queryInput.addEventListener(
-  "keydown",
-  function(event){
+"keydown",
+function(event){
 
-    if(event.key === "Enter"){
-      search();
-    }
+if(event.key === "Enter"){
+search();
+}
 
-  }
-);
+});
 
-
-/* MAIN SEARCH */
 
 async function search(){
 
-  const query =
-    queryInput.value.trim();
+const query =
+queryInput.value.trim();
 
-  if(!query){
+if(!query){
 
-    alert(
-      "Mee waan barbaaddu barreessi."
-    );
+alert(
+"Mee waan barbaaddu barreessi."
+);
 
-    queryInput.focus();
+queryInput.focus();
 
-    return;
-  }
+return;
 
-  status.innerHTML =
-    "⏳ Barbaadaa jira...";
+}
 
-  textResults.innerHTML = "";
-  imageResults.innerHTML = "";
+status.innerHTML =
+"⏳ Barbaadaa jira...";
 
-  searchButton.disabled = true;
+textResults.innerHTML = "";
 
-  try{
+imageResults.innerHTML = "";
 
-    await Promise.all([
-      wikipediaSearch(query),
-      imageSearch(query)
-    ]);
+videoResults.innerHTML = "";
 
-    status.innerHTML =
-      "✅ Search xumurame.";
+searchButton.disabled = true;
 
-  }catch(error){
 
-    console.error(error);
+const results =
+await Promise.allSettled([
 
-    status.innerHTML =
-      "❌ Rakkoon uumame. Internet kee ilaali.";
+wikipediaSearch(query),
 
-  }
+imageSearch(query),
 
-  searchButton.disabled = false;
+wikimediaVideoSearch(query),
+
+archiveVideoSearch(query)
+
+]);
+
+
+const failed =
+results.filter(
+r => r.status === "rejected"
+).length;
+
+
+if(failed === 0){
+
+status.innerHTML =
+"✅ Search xumurame.";
+
+}else{
+
+status.innerHTML =
+"✅ Search xumurame. Maddoonni tokko tokko hin deebine.";
 
 }
 
 
-/* WIKIPEDIA SEARCH */
+searchButton.disabled = false;
+
+}
+
+
+/* =========================
+   WIKIPEDIA
+========================= */
 
 async function wikipediaSearch(query){
 
-  const url =
-    "https://om.wikipedia.org/w/api.php?" +
-    "action=query" +
-    "&generator=search" +
-    "&gsrsearch=" +
-    encodeURIComponent(query) +
-    "&gsrnamespace=0" +
-    "&gsrlimit=10" +
-    "&prop=extracts|info" +
-    "&exintro=1" +
-    "&explaintext=1" +
-    "&inprop=url" +
-    "&format=json" +
-    "&origin=*";
+const url =
+"https://om.wikipedia.org/w/api.php?" +
 
-  const response =
-    await fetch(url);
+"action=query" +
 
-  if(!response.ok){
+"&generator=search" +
 
-    throw new Error(
-      "Wikipedia API error"
-    );
+"&gsrsearch=" +
+encodeURIComponent(query) +
 
-  }
+"&gsrnamespace=0" +
 
-  const data =
-    await response.json();
+"&gsrlimit=10" +
 
-  if(
-    !data.query ||
-    !data.query.pages
-  ){
+"&prop=extracts|info" +
 
-    textResults.innerHTML =
-      `<div class="empty">
-        📝 Barreeffama hin argamne.
-      </div>`;
+"&exintro=1" +
 
-    return;
-  }
+"&explaintext=1" +
 
-  const pages =
-    Object.values(
-      data.query.pages
-    );
+"&inprop=url" +
 
-  pages.forEach(page => {
+"&format=json" +
 
-    const card =
-      document.createElement("div");
+"&origin=*";
 
-    card.className =
-      "text-card";
 
-    const title =
-      document.createElement("h3");
+const response =
+await fetch(url);
 
-    title.textContent =
-      page.title;
+if(!response.ok){
 
-    const paragraph =
-      document.createElement("p");
-
-    paragraph.textContent =
-      page.extract ||
-      "Ibsi hin jiru.";
-
-    card.appendChild(title);
-    card.appendChild(paragraph);
-
-    if(page.fullurl){
-
-      const link =
-        document.createElement("a");
-
-      link.href =
-        page.fullurl;
-
-      link.target =
-        "_blank";
-
-      link.rel =
-        "noopener noreferrer";
-
-      link.textContent =
-        "Wikipedia irratti dubbisi →";
-
-      card.appendChild(link);
-
-    }
-
-    textResults.appendChild(card);
-
-  });
+throw new Error(
+"Wikipedia error"
+);
 
 }
 
 
-/* IMAGE SEARCH */
+const data =
+await response.json();
+
+
+if(
+!data.query ||
+!data.query.pages
+){
+
+textResults.innerHTML =
+`
+<div class="empty">
+📝 Barreeffama hin argamne.
+</div>
+`;
+
+return;
+
+}
+
+
+Object.values(
+data.query.pages
+).forEach(page => {
+
+const card =
+document.createElement("div");
+
+card.className =
+"text-card";
+
+
+const title =
+document.createElement("h3");
+
+title.textContent =
+page.title;
+
+
+const paragraph =
+document.createElement("p");
+
+paragraph.textContent =
+page.extract ||
+"Ibsi hin jiru.";
+
+
+card.appendChild(title);
+
+card.appendChild(paragraph);
+
+
+if(page.fullurl){
+
+const link =
+document.createElement("a");
+
+link.href =
+page.fullurl;
+
+link.target =
+"_blank";
+
+link.rel =
+"noopener noreferrer";
+
+link.textContent =
+"Wikipedia irratti dubbisi →";
+
+card.appendChild(link);
+
+}
+
+
+textResults.appendChild(card);
+
+});
+
+}
+
+
+/* =========================
+   IMAGE SEARCH
+========================= */
 
 async function imageSearch(query){
 
-  const url =
-    "https://commons.wikimedia.org/w/api.php?" +
-    "action=query" +
-    "&generator=search" +
-    "&gsrsearch=" +
-    encodeURIComponent(query) +
-    "&gsrnamespace=6" +
-    "&gsrlimit=20" +
-    "&prop=imageinfo" +
-    "&iiprop=url" +
-    "&iiurlwidth=500" +
-    "&format=json" +
-    "&origin=*";
+const url =
+"https://commons.wikimedia.org/w/api.php?" +
 
-  const response =
-    await fetch(url);
+"action=query" +
 
-  if(!response.ok){
+"&generator=search" +
 
-    throw new Error(
-      "Wikimedia API error"
-    );
+"&gsrsearch=" +
+encodeURIComponent(query) +
 
-  }
+"&gsrnamespace=6" +
 
-  const data =
-    await response.json();
+"&gsrlimit=20" +
 
-  if(
-    !data.query ||
-    !data.query.pages
-  ){
+"&prop=imageinfo" +
 
-    imageResults.innerHTML =
-      `<div class="empty">
-        🖼️ Suuraa hin argamne.
-      </div>`;
+"&iiprop=url" +
 
-    return;
-  }
+"&iiurlwidth=500" +
 
-  const pages =
-    Object.values(
-      data.query.pages
-    );
+"&format=json" +
 
-  pages.forEach(page => {
+"&origin=*";
 
-    if(!page.imageinfo){
-      return;
-    }
 
-    const info =
-      page.imageinfo[0];
+const response =
+await fetch(url);
 
-    const imageURL =
-      info.thumburl || info.url;
+if(!response.ok){
 
-    const title =
-      page.title.replace(
-        "File:",
-        ""
-      );
+throw new Error(
+"Wikimedia image error"
+);
 
-    const card =
-      document.createElement("div");
+}
 
-    card.className =
-      "image-card";
 
-    const image =
-      document.createElement("img");
+const data =
+await response.json();
 
-    image.src =
-      imageURL;
 
-    image.alt =
-      title;
+if(
+!data.query ||
+!data.query.pages
+){
 
-    image.loading =
-      "lazy";
+imageResults.innerHTML =
+`
+<div class="empty">
+🖼️ Suuraa hin argamne.
+</div>
+`;
 
-    image.onerror =
-      function(){
+return;
 
-        card.remove();
+}
 
-      };
 
-    const caption =
-      document.createElement("p");
+Object.values(
+data.query.pages
+).forEach(page => {
 
-    caption.textContent =
-      title;
+if(!page.imageinfo){
+return;
+}
 
-    card.appendChild(image);
-    card.appendChild(caption);
 
-    imageResults.appendChild(card);
+const info =
+page.imageinfo[0];
 
-  });
+
+const imageURL =
+info.thumburl ||
+info.url;
+
+
+const title =
+page.title.replace(
+"File:",
+""
+);
+
+
+const card =
+document.createElement("div");
+
+card.className =
+"image-card";
+
+
+const image =
+document.createElement("img");
+
+image.src =
+imageURL;
+
+image.alt =
+title;
+
+image.loading =
+"lazy";
+
+
+const caption =
+document.createElement("p");
+
+caption.textContent =
+title;
+
+
+card.appendChild(image);
+
+card.appendChild(caption);
+
+imageResults.appendChild(card);
+
+});
+
+}
+
+
+/* =========================
+   WIKIMEDIA VIDEO
+========================= */
+
+async function wikimediaVideoSearch(query){
+
+const url =
+"https://commons.wikimedia.org/w/api.php?" +
+
+"action=query" +
+
+"&generator=search" +
+
+"&gsrsearch=" +
+encodeURIComponent(query) +
+
+" filetype:video" +
+
+"&gsrnamespace=6" +
+
+"&gsrlimit=20" +
+
+"&prop=imageinfo" +
+
+"&iiprop=url" +
+
+"&format=json" +
+
+"&origin=*";
+
+
+const response =
+await fetch(url);
+
+if(!response.ok){
+
+throw new Error(
+"Wikimedia video error"
+);
+
+}
+
+
+const data =
+await response.json();
+
+
+if(
+!data.query ||
+!data.query.pages
+){
+
+return;
+
+}
+
+
+Object.values(
+data.query.pages
+).forEach(page => {
+
+if(!page.imageinfo){
+return;
+}
+
+
+const info =
+page.imageinfo[0];
+
+
+const videoURL =
+info.url || "";
+
+
+if(
+!isVideo(videoURL)
+){
+
+return;
+
+}
+
+
+createVideoCard(
+videoURL,
+page.title.replace("File:",""),
+"Wikimedia Commons"
+);
+
+});
+
+}
+
+
+/* =========================
+   INTERNET ARCHIVE
+========================= */
+
+async function archiveVideoSearch(query){
+
+const url =
+"https://archive.org/advancedsearch.php?" +
+
+"q=" +
+encodeURIComponent(
+query +
+" AND mediatype:movies"
+) +
+
+"&fl[]=identifier" +
+
+"&fl[]=title" +
+
+"&rows=10" +
+
+"&page=1" +
+
+"&output=json";
+
+
+const response =
+await fetch(url);
+
+
+if(!response.ok){
+
+throw new Error(
+"Internet Archive error"
+);
+
+}
+
+
+const data =
+await response.json();
+
+
+if(
+!data.response ||
+!data.response.docs
+){
+
+return;
+
+}
+
+
+for(
+const item of data.response.docs
+){
+
+if(!item.identifier){
+continue;
+}
+
+
+const metadataURL =
+"https://archive.org/metadata/" +
+item.identifier;
+
+
+try{
+
+const metaResponse =
+await fetch(metadataURL);
+
+const meta =
+await metaResponse.json();
+
+
+if(!meta.files){
+continue;
+}
+
+
+const videoFile =
+meta.files.find(
+file =>
+isVideo(file.name || "")
+);
+
+
+if(!videoFile){
+continue;
+}
+
+
+const videoURL =
+"https://archive.org/download/" +
+item.identifier +
+"/" +
+encodeURIComponent(
+videoFile.name
+);
+
+
+createVideoCard(
+videoURL,
+item.title ||
+item.identifier,
+"Internet Archive"
+);
+
+
+}catch(error){
+
+console.log(
+"Archive item error",
+error
+);
+
+}
+
+}
+
+}
+
+
+/* =========================
+   VIDEO CARD
+========================= */
+
+function createVideoCard(
+videoURL,
+title,
+source
+){
+
+const card =
+document.createElement("div");
+
+card.className =
+"video-card";
+
+
+const video =
+document.createElement("video");
+
+video.controls =
+true;
+
+video.preload =
+"metadata";
+
+video.src =
+videoURL;
+
+
+const info =
+document.createElement("div");
+
+info.className =
+"video-info";
+
+
+const heading =
+document.createElement("h3");
+
+heading.textContent =
+title;
+
+
+const sourceText =
+document.createElement("p");
+
+sourceText.textContent =
+"Madda: " + source;
+
+
+const link =
+document.createElement("a");
+
+link.href =
+videoURL;
+
+link.target =
+"_blank";
+
+link.rel =
+"noopener noreferrer";
+
+link.textContent =
+"🔗 Video bana →";
+
+
+info.appendChild(heading);
+
+info.appendChild(sourceText);
+
+info.appendChild(link);
+
+
+card.appendChild(video);
+
+card.appendChild(info);
+
+
+videoResults.appendChild(card);
+
+}
+
+
+/* =========================
+   VIDEO CHECK
+========================= */
+
+function isVideo(url){
+
+const lower =
+url.toLowerCase();
+
+return (
+
+lower.includes(".mp4") ||
+
+lower.includes(".webm") ||
+
+lower.includes(".ogv") ||
+
+lower.includes(".mov") ||
+
+lower.includes(".m4v")
+
+);
 
 }
 
